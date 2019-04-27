@@ -1,0 +1,22 @@
+{
+  "name": "sql_library_manager",
+  "version": "1.0.0",
+  "description": "Fullstack JavaScript Techdegree at Treehouse.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "author": "Toshikazu Horioka",
+  "license": "ISC",
+  "dependencies": {
+    "cookie-parser": "^1.4.4",
+    "express": "^4.16.4",
+    "express-generator": "^4.16.0",
+    "pug": "^2.0.3",
+    "sequelize": "^5.7.6",
+    "sequelize-cli": "^5.4.0",
+    "sqlite3": "^4.0.6"
+  }
+}

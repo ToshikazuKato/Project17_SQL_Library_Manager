@@ -13,7 +13,7 @@ router.get('/', (rq, rs) => {
 
 // display book creation form
 router.get('/new',(rq,rs)=>{
-	rs.render('new_book');
+	rs.render('new-book');
 });
 
 // insert a book into table
@@ -28,22 +28,33 @@ router.post('/new',(rq,rs)=>{
 	Book.findOne({where:book}).then(bk=>{
 		if(bk){
 			//display errors that book is already in the table
+			rs.render('new-book',{book:bk, err:["This book already exists in the database"] });
 		}else{
 			// create a new book
 			Book.create(book).then(newBook => {
-				console.log(newBook+' is successfully registered');
 				rs.redirect('/books');
 			}).catch(err=>{
-				console.log(err.errors);
+				// can not save
+				if (err.name ==='SequelizeValidationError'){
+					rs.render('new-book',{
+						book: Book.build(rq.body),
+						err: err.errors
+					});
+				}else{
+					throw err;
+				}
+
 			});
 		}
+	}).catch(err => {
+		rs.send(500, err)
 	});
 });
 
 // display book detail
 router.get('/:id',(rq,rs)=>{
 	Book.findByPk(rq.params.id).then(book => {
-		rs.render('book_detail',{book:book});
+		rs.render('update-book',{book:book});
 	}).catch(err=>{
 		console.log(err);
 	});
@@ -63,6 +74,15 @@ router.post('/:id',(rq,rs)=>{
 	});
 })
 
-
+router.post('/:id/delete',(rq,rs)=>{
+	Book.findByPk(rq.params.id).then(book => {
+		if(book){
+			book.destroy();
+			rs.redirect('/books');
+		}else{
+			//err
+		}
+	})
+})
 
 module.exports = router;

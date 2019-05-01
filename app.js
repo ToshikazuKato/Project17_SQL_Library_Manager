@@ -21,6 +21,19 @@ app.get('/',(req,res,next)=>{
 const bookRoutes = require('./routes/books');
 app.use('/books',bookRoutes);
 
+//error handling
+app.use((req,res,next)=>{
+	const err = new Error('You got lost but it serves you right...');
+	err.status = 404;
+	next(err);
+});
+
+app.use((err,req,res,next)=>{
+	res.locals.error = err;
+	res.status(err.status);
+	res.render('page-not-found');
+});
+
 
 // server start, app listens on PORT 3000
 sequelize.sync().then(function(){

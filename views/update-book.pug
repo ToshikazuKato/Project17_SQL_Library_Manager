@@ -1,7 +1,7 @@
 extends layout.pug 
 
 block content
-
+	include form-error.pug
 	h1 Book Details
 	form(action=`/books/${book.id}/`, method="POST")
 		p

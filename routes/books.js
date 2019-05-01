@@ -41,9 +41,11 @@ router.post('/new',(rq,rs)=>{
 						err: err.errors
 					});
 				}else{
-					throw err;
+					next(err);
 				}
 
+			}).catch(err=>{
+				rs.send(500, err);
 			});
 		}
 	}).catch(err => {
@@ -54,9 +56,14 @@ router.post('/new',(rq,rs)=>{
 // display book detail
 router.get('/:id',(rq,rs)=>{
 	Book.findByPk(rq.params.id).then(book => {
-		rs.render('update-book',{book:book});
+		if(book){
+			rs.render('update-book', { book: book });
+		}else{
+			// book not found
+			rs.render('page-not-found');
+		}
 	}).catch(err=>{
-		console.log(err);
+		rs.send(500,err);
 	});
 });
 
@@ -68,12 +75,24 @@ router.post('/:id',(rq,rs)=>{
 			return book.update(rq.body);
 		}else{
 			//err
+			rs.render('update-book',{err:['Book not found, could not update the book.']});
 		}
 	}).then(()=>{
 		rs.redirect('/books');
+	}).catch(err=>{
+		if (err.name === 'SequelizeValidationError'){
+			rs.render('update-book', {
+				book: Book.build(rq.body),
+				err: err.errors
+			});
+		}else{
+			next(err);
+		}
+	}).catch(err=>{
+		rs.send(500, err);
 	});
 })
-
+// delete selected book
 router.post('/:id/delete',(rq,rs)=>{
 	Book.findByPk(rq.params.id).then(book => {
 		if(book){
@@ -81,7 +100,10 @@ router.post('/:id/delete',(rq,rs)=>{
 			rs.redirect('/books');
 		}else{
 			//err
+			rs.render('page-not-found');
 		}
+	}).catch(err => {
+		rs.send(500,err);
 	})
 })
 

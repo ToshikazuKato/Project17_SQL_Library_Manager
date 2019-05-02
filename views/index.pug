@@ -1,7 +1,13 @@
 extends layout.pug
 
 block content
+	if err
+		h2=err[0]
+		a.button(href="/books") Back
 	h1 Books
+	form(action="/books/search" method="GET")
+		input(type="text", name="search",placeholder="Search books")
+		input(type="submit", value="Search")
 	p
 		a.button(href='/books/new') Create New Book
 	table

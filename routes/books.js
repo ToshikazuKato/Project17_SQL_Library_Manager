@@ -2,12 +2,15 @@ const Book = require('../models').Book;
 const express = require('express');
 const router = express.Router();
 const Op = require('sequelize').Op;
+const limit = 10;
+let pageNum = 0;
 
 // display all books
 router.get('/', (rq, rs) => {
-	Book.findAll()
+	Book.findAndCountAll({ order: [['createdAt', 'DESC']], limit})
 		.then(books => {
-			rs.render('index', { books: books });
+			pageNum = Math.ceil(books.count/limit);
+			rs.render('index', { books: books.rows, page : pageNum});
 		})
 		.catch(err => {
 			rs.send(500, err);
@@ -67,8 +70,9 @@ router.post('/new', (rq, rs) => {
 router.get('/search', (rq, rs) => {
 	var query = rq.query.search;
 	if(query){
-		Book.findAll({
+		Book.findAndCountAll({
 			order: [['createdAt', 'DESC']],
+			limit,
 			where: {
 				[Op.or]: [
 					{
@@ -94,8 +98,9 @@ router.get('/search', (rq, rs) => {
 				]
 			}
 		}).then(books => {
-			if (books && books.length > 0) {
-				rs.render('index', { books: books });
+			if (books.rows && books.rows.length > 0) {
+				pageNum = Math.ceil(books.count / limit);
+				rs.render('index', { books: books.rows, page: pageNum });
 			} else {
 				rs.render('index', { books: books, err: ['No record'] });
 			}
@@ -104,16 +109,23 @@ router.get('/search', (rq, rs) => {
 				rs.send(500, err);
 			});
 	}else{
-		Book.findAll()
-			.then(books => {
-				rs.render('index', { books: books });
-			})
-			.catch(err => {
-				rs.send(500, err);
-			});
+		rs.redirect('/books');
 	}
 	
 });
+
+//pagination function
+router.get('/page/:n',(rq,rs)=>{
+	let offset = (parseInt(rq.params.n) * limit);
+	Book.findAndCountAll({ order: [['createdAt', 'DESC']], limit , offset})
+		.then(books => {
+			pageNum = Math.ceil(books.count / limit);
+			rs.render('index', { books: books.rows, page: pageNum });
+		})
+		.catch(err => {
+			rs.send(500, err);
+		});
+})
 
 // display book detail
 router.get('/:id', (rq, rs) => {
@@ -136,7 +148,6 @@ router.post('/:id', (rq, rs) => {
 	Book.findByPk(rq.params.id)
 		.then(book => {
 			if (book) {
-				console.log(rq.body);
 				return book.update(rq.body);
 			} else {
 				//err

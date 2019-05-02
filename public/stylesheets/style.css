@@ -95,3 +95,23 @@ input[type=text] {
 .error {
   color: rgb(236, 15, 15);
 }
+
+footer{
+	position: absolute;
+}
+
+.pagination{
+	display: flex;
+	cursor: pointer;
+	position: fixed;
+	transform: translateY(3rem);
+}
+
+.mrg_left{
+	margin-left: 20px;
+	transition: 0.3s;
+}
+
+.mrg_left:hover{
+	color:hsl(166, 74%, 46%);
+}

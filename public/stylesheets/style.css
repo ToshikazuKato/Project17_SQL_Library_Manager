@@ -1,6 +1,7 @@
 body {
   padding: 10px 50px 50px;
   font: 18px "Garamond", serif;
+  
 }
 
 a {
@@ -22,6 +23,7 @@ a.button, input[type=submit] {
   font-size: 14px;
   border-radius: 2px;
   cursor: pointer;
+  border-radius: 3px;
 }
 
 form a.button, input[type=submit] {
@@ -33,7 +35,7 @@ input[type=submit] {
   border: 0;
 }
 
-  a.button:hover, input[type=submit]:hover {
+  a.button:hover, input[type=submit]:hover{
     background-color: #01b189;
   }
 
@@ -98,20 +100,34 @@ input[type=text] {
 
 footer{
 	position: absolute;
+	left: 3rem;
+	bottom: 5rem;
 }
 
 .pagination{
 	display: flex;
 	cursor: pointer;
-	position: fixed;
-	transform: translateY(3rem);
+	
 }
 
 .mrg_left{
 	margin-left: 20px;
-	transition: 0.3s;
+	transition: 0.4s;
 }
 
 .mrg_left:hover{
-	color:hsl(166, 74%, 46%);
+	transform: scale(1.2);
 }
+
+.mrg_left a{
+	border-bottom: 1px #019875 solid;
+}
+
+.mrg_left:hover a:hover {
+	color: #01b189;
+}
+
+table{
+	width: 550px;
+}
+

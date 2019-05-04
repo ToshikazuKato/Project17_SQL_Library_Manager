@@ -1,7 +1,7 @@
 if err
 	h2.error Oooops!
 	ul.error
-		if err.length > 1
+		if err[0].message
 			each error in err
 				li=error.message
 		else 

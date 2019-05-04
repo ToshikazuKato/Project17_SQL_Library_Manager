@@ -161,6 +161,7 @@ router.post('/:id', (rq, rs) => {
 		})
 		.catch(err => {
 			if (err.name === 'SequelizeValidationError') {
+				rq.body.id=rq.params.id;
 				rs.render('update-book', {
 					book: Book.build(rq.body),
 					err: err.errors
@@ -172,6 +173,7 @@ router.post('/:id', (rq, rs) => {
 		.catch(err => {
 			rs.send(500, err);
 		});
+	
 });
 // delete selected book
 router.post('/:id/delete', (rq, rs) => {

@@ -1,7 +1,6 @@
 extends layout.pug
 
 block content
-	- console.log(page)
 	if err
 		h2=err[0]
 		a.button(href="/books") Back
@@ -33,7 +32,5 @@ block content
 				while n < page
 					li.mrg_left
 						a(href=`/books/page/${n}`)=n++
-			//- each p in page
-			//- console.log(p)
-		//- 		a.pagniation(href=`/books/:${p}`)
+			
 		

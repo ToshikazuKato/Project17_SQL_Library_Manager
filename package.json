@@ -14,9 +14,12 @@
     "cookie-parser": "^1.4.4",
     "express": "^4.16.4",
     "express-generator": "^4.16.0",
+    "i": "^0.3.6",
+    "lodash.update": "^4.10.2",
+    "npm": "^6.10.1",
     "pug": "^2.0.3",
-    "sequelize": "^5.7.6",
-    "sequelize-cli": "^5.4.0",
+    "sequelize": "^6.0.0",
+    "sequelize-cli": "^5.5.0",
     "sqlite3": "^4.0.6"
   }
 }

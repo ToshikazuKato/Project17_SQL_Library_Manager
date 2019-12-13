@@ -16,7 +16,7 @@
     "express-generator": "^4.16.0",
     "i": "^0.3.6",
     "lodash.update": "^4.10.2",
-    "npm": "^6.10.1",
+    "npm": "^6.13.4",
     "pug": "^2.0.3",
     "sequelize": "^6.0.0",
     "sequelize-cli": "^5.5.0",
